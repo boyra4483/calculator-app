@@ -1,10 +1,10 @@
 import classes from "./Keypad.module.css";
 import Button from "../button/Button";
 
-export default function Keypad() {
+export default function Keypad({ onClick, expression }) {
   function handleClick(e) {
     if (e.target.tagName == "SECTION") return;
-    console.log(e.target.tagName);
+    onClick(expression + e.target.textContent);
   }
 
   return (
