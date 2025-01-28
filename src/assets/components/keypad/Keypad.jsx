@@ -3,7 +3,9 @@ import Button from "../button/Button";
 
 export default function Keypad({ onClick, expression }) {
   function handleClick(e) {
-    if (e.target.tagName == "SECTION") return;
+    const target = e.target;
+    if (target.tagName != "DIV") return;
+    console.log(target);
     onClick(expression + e.target.textContent);
   }
 
@@ -30,4 +32,8 @@ export default function Keypad({ onClick, expression }) {
       <Button value="=" />
     </section>
   );
+}
+
+function isOperator(key) {
+  return ["+", "-", "%", "X", "/"].includes(key);
 }
