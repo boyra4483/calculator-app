@@ -10,12 +10,13 @@ export default function Keypad({ onClick, expression }) {
       key == "=" ? expression : expression + key
     );
 
-    if (!expression && operators.includes(key)) return;
-    if (key == "AC") return onClick("");
+    if (operators.includes(key) && isOperatorDuplicated(expression + key))
+      return;
     if (target.tagName != "DIV") return;
+    if (key == "AC") return onClick("");
+    if (!expression && operators.includes(key)) return;
+    if ((expression + key).endsWith("=") && !splitedExpression) return;
     if (splitedExpression && key == "=") {
-      console.log(splitedExpression);
-      console.log(calculating(splitedExpression));
       return onClick(calculating(splitedExpression));
     }
 
@@ -68,4 +69,18 @@ function getSplitExpression(expression) {
 
   if (!glew || !expression.split(glew)[1]) return;
   return [expression.split(glew)[0], glew, expression.split(glew)[1]];
+}
+
+function isOperatorDuplicated(expression) {
+  const operator = operators.find((operator) => expression.includes(operator));
+  const copyExpression = [...expression];
+
+  return (
+    copyExpression.includes(
+      copyExpression.splice(
+        copyExpression.findIndex((char) => char == operator),
+        1
+      )[0]
+    ) || operators.find((operator) => copyExpression.includes(operator))
+  );
 }
