@@ -1,12 +1,25 @@
 import classes from "./Keypad.module.css";
 import Button from "../button/Button";
+import { operators } from "../../common/common";
 
 export default function Keypad({ onClick, expression }) {
   function handleClick(e) {
     const target = e.target;
+    const key = e.target.textContent;
+    const splitedExpression = getSplitExpression(
+      key == "=" ? expression : expression + key
+    );
+
+    if (!expression && operators.includes(key)) return;
+    if (key == "AC") return onClick("");
     if (target.tagName != "DIV") return;
-    console.log(target);
-    onClick(expression + e.target.textContent);
+    if (splitedExpression && key == "=") {
+      console.log(splitedExpression);
+      console.log(calculating(splitedExpression));
+      return onClick(calculating(splitedExpression));
+    }
+
+    onClick(expression + key);
   }
 
   return (
@@ -34,6 +47,25 @@ export default function Keypad({ onClick, expression }) {
   );
 }
 
-function isOperator(key) {
-  return ["+", "-", "%", "X", "/"].includes(key);
+function calculating([x, operator, y]) {
+  switch (operator) {
+    case "+":
+      return (+x + +y).toFixed(0);
+    case "-":
+      return (x - y).toFixed(0);
+    case "X":
+      return (x * y).toFixed(0);
+    case "/":
+      return (x / y).toFixed(2);
+    case "%":
+      return (x / y) * 100 * 100;
+  }
+}
+
+function getSplitExpression(expression) {
+  if (expression == "") return;
+  const glew = operators.find((operator) => expression.includes(operator));
+
+  if (!glew || !expression.split(glew)[1]) return;
+  return [expression.split(glew)[0], glew, expression.split(glew)[1]];
 }
