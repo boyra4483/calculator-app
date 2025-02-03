@@ -14,13 +14,19 @@ export default function Keypad({ onClick, expression }) {
       return;
     if (target.tagName != "DIV") return;
     if (key == "AC") return onClick("");
+
+    // the first keys must not be operators
     if (!expression && operators.includes(key)) return;
+
     if ((expression + key).endsWith("=") && !splitedExpression) return;
     if (splitedExpression && key == "=") {
       return onClick(calculating(splitedExpression));
     }
-
-    onClick(expression + key);
+    if (key == "+/-" && expression)
+      return onClick(
+        `${expression.startsWith("-") ? expression.slice(1) : `-${expression}`}`
+      );
+    onClick(key == "+/-" ? expression : expression + key);
   }
 
   return (
@@ -49,15 +55,18 @@ export default function Keypad({ onClick, expression }) {
 }
 
 function calculating([x, operator, y]) {
+  const hasRemainder = [...(x + y)].includes(".");
+
   switch (operator) {
     case "+":
-      return (+x + +y).toFixed(0);
+      return hasRemainder ? (+x + +y).toFixed(2) : +x + +y;
     case "-":
-      return (x - y).toFixed(0);
+      return hasRemainder ? (x - y).toFixed(2) : x - y;
     case "X":
-      return (x * y).toFixed(0);
+      console.log(hasRemainder ? (x * y).toFixed(2) : x * y);
+      return hasRemainder ? (x * y).toFixed(2) : x * y;
     case "/":
-      return (x / y).toFixed(2);
+      return x % y != 0 ? (x / y).toFixed(2) : x / y;
     case "%":
       return (x / y) * 100 * 100;
   }
@@ -65,15 +74,22 @@ function calculating([x, operator, y]) {
 
 function getSplitExpression(expression) {
   if (expression == "") return;
-  const glew = operators.find((operator) => expression.includes(operator));
 
-  if (!glew || !expression.split(glew)[1]) return;
+  const copyExpression = expression.slice(1);
+  const glew = operators.find((operator) => copyExpression.includes(operator));
+
+  if (!glew || !copyExpression.split(glew)[1]) return;
   return [expression.split(glew)[0], glew, expression.split(glew)[1]];
 }
 
 function isOperatorDuplicated(expression) {
-  const operator = operators.find((operator) => expression.includes(operator));
-  const copyExpression = [...expression];
+  const copyExpression = [
+    ...(expression.startsWith("-") ? expression.slice(1) : expression),
+  ];
+
+  const operator = operators.find((operator) =>
+    copyExpression.includes(operator)
+  );
 
   return (
     copyExpression.includes(
