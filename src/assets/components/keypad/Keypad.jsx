@@ -13,7 +13,7 @@ export default function Keypad({ onClick, expression }) {
     if (key == "AC") return onClick("");
 
     if (splitedExpression && key == "=") {
-      return onClick(calculating(splitedExpression));
+      return onClick(`${calculating(splitedExpression)}`);
     }
     if (key == "+/-" && expression)
       return onClick(
