@@ -1,3 +1,3 @@
 "use strict";
 
-export const operators = ["+", "-", "%", "X", "/"];
+export const operators = ["+", "-", "%", "X", "/", "+/-"];

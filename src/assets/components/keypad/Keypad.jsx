@@ -5,74 +5,31 @@ import { operators } from "../../common/common";
 export default function Keypad({ onClick, expression }) {
   function handleClick(e) {
     const key = e.target.textContent;
-    const splitedExpression = getSplitExpression(
-      key == "=" ? expression : expression + key
-    );
+    const completeExpression = expression + key;
 
-    if (!isValidData(expression, key, e.target)) return;
-    if (key == "AC") return onClick("");
-
-    if (splitedExpression && key == "=") {
-      return onClick(`${calculating(splitedExpression)}`);
-    }
-    if (key == "+/-" && expression)
+    if (!isValidData(completeExpression, e.target)) return;
+    if (key == "+/-") {
       return onClick(
-        `${expression.startsWith("-") ? expression.slice(1) : `-${expression}`}`
+        `${
+          completeExpression.startsWith("-")
+            ? completeExpression.slice(1, -3)
+            : `-${completeExpression.slice(0, -3)}`
+        }`
       );
+    }
 
-    onClick(key == "+/-" ? expression : expression + key);
+    if (key == "AC") return onClick("");
+    if (completeExpression.endsWith("=")) {
+      return onClick(getResult(completeExpression));
+    }
+
+    onClick(completeExpression);
   }
 
   return (
     <section className={classes["keypad"]} onClick={handleClick}>
       {getKeyButtons()}
     </section>
-  );
-}
-
-function calculating([x, operator, y]) {
-  const hasRemainder = [...(x + y)].includes(".");
-
-  switch (operator) {
-    case "+":
-      return hasRemainder ? (+x + +y).toFixed(2) : +x + +y;
-    case "-":
-      return hasRemainder ? (x - y).toFixed(2) : x - y;
-    case "X":
-      return hasRemainder ? (x * y).toFixed(2) : x * y;
-    case "/":
-      return x % y != 0 ? (x / y).toFixed(2) : x / y;
-    case "%":
-      return (x / y) * 100 * 100;
-  }
-}
-
-function getSplitExpression(expression) {
-  if (expression == "") return;
-
-  const copyExpression = expression.slice(1);
-  const glew = operators.find((operator) => copyExpression.includes(operator));
-
-  if (!glew || !copyExpression.split(glew)[1]) return;
-  return [expression.split(glew)[0], glew, expression.split(glew)[1]];
-}
-
-function isOperatorDuplicated(expression) {
-  const copyExpression = [
-    ...(expression.startsWith("-") ? expression.slice(1) : expression),
-  ];
-
-  const operator = operators.find((operator) =>
-    copyExpression.includes(operator)
-  );
-
-  return (
-    copyExpression.includes(
-      copyExpression.splice(
-        copyExpression.findIndex((char) => char == operator),
-        1
-      )[0]
-    ) || operators.find((operator) => copyExpression.includes(operator))
   );
 }
 
@@ -102,27 +59,21 @@ function getKeyButtons() {
   );
 }
 
-function isValidData(expression, key, target) {
-  const splitedExpression = getSplitExpression(
-    key == "=" ? expression : expression + key
-  );
+function getResult(expression) {
+  const result = window.eval(expression.replaceAll("X", "*").slice(0, -1));
+  return `${result}`.includes(".") ? result.toFixed(2) : result;
+}
 
+function isValidData(expression, target) {
   if (target.tagName != "DIV") return false;
-  if (!expression && operators.includes(key)) return false;
-  if (operators.includes(key) && isOperatorDuplicated(expression + key))
+  if (expression == "=") return false;
+  if (operators.includes(expression)) return false;
+  if (
+    (expression.slice(-3) != "+/-" &&
+      operators.includes(expression.split("").at(-1)) &&
+      operators.includes(expression.split("").at(-2))) ||
+    (expression.split("").at(-1) == "." && expression.split("").at(-2) == ".")
+  )
     return false;
-  if ((expression + key).endsWith("=") && !splitedExpression) return false;
-  if (key == "." && !splitedExpression && expression.includes(key))
-    return false;
-
-  if (key == "." && splitedExpression) {
-    const exp = splitedExpression[2].split("");
-    exp.splice(
-      splitedExpression.slice().findIndex((char) => char == "."),
-      1
-    );
-    return exp.includes(".") ? false : true;
-  }
-  if (!splitedExpression && key == "%") return false;
   return true;
 }
