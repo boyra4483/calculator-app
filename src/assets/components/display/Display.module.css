@@ -1,0 +1,15 @@
+.display {
+  height: 60px;
+  max-width: calc(304px - 40px);
+  overflow: hidden;
+  margin-top: 100px;
+  margin-right: 40px;
+  margin-bottom: 40px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 200;
+  font-size: 48px;
+  line-height: 60px;
+  color: #ffffff;
+  text-align: right;
+}

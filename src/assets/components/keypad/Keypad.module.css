@@ -1,0 +1,48 @@
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(32px, 64px));
+  grid-template-rows: repeat(5, minmax(32px, 64px));
+  gap: 16px;
+}
+
+.keypad > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 36px;
+  color: #ffffff;
+  background-color: #333333;
+}
+
+.keypad > div:nth-child(4),
+.keypad > div:nth-child(8),
+.keypad > div:nth-child(12),
+.keypad > div:nth-child(16),
+.keypad > div:nth-child(20) {
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #f89b10;
+}
+
+.keypad > div:nth-child(1),
+.keypad > div:nth-child(2),
+.keypad > div:nth-child(3) {
+  font-weight: 500;
+  color: #000000;
+  background-color: #a5a5a5;
+}
+
+.keypad > div:nth-child(3) {
+  background-color: #454545;
+}
+
+.keypad > div:nth-child(17) {
+  justify-content: flex-start;
+  padding-left: 26px;
+  grid-column: 1/3;
+}

@@ -65,7 +65,7 @@ function getResult(expression) {
 }
 
 function isValidData(expression, target) {
-  if (target.tagName != "DIV") return false;
+  if (target.tagName != "DIV" || target.textContent == "%") return false;
   if (expression == "=") return false;
   if (operators.includes(expression)) return false;
   if (
@@ -73,7 +73,15 @@ function isValidData(expression, target) {
       operators.includes(expression.split("").at(-1)) &&
       operators.includes(expression.split("").at(-2))) ||
     (expression.split("").at(-1) == "." && expression.split("").at(-2) == ".")
-  )
+  ) {
     return false;
+  }
+  if (
+    expression.endsWith("=") &&
+    operators.includes(expression.split("").at(-2))
+  ) {
+    return false;
+  }
+
   return true;
 }
