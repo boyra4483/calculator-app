@@ -2,3 +2,27 @@
   padding: 0 10px 10px;
   background-color: black;
 }
+
+.gratitude {
+  text-align: center;
+  padding-top: 27px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 200;
+  color: #ffffff;
+  max-width: 304px;
+  line-height: 1.5;
+}
+
+.gratitude > a:link {
+  text-decoration: none;
+  color: #ff7a7a;
+}
+
+.gratitude > a:visited {
+  color: #93ccff;
+}
+
+.gratitude > a:hover {
+  text-decoration: underline;
+}

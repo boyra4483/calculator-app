@@ -10,6 +10,16 @@ export default function App() {
     <section className={classes["calculator"]}>
       <Display expression={expression} />
       <Keypad expression={expression} onClick={setExpression} />
+      <p className={classes["gratitude"]}>
+        thank{" "}
+        <a
+          href="https://www.figma.com/community/file/1284214703277704177"
+          target="_blank"
+        >
+          Kritika Adhikari
+        </a>{" "}
+        very much for free template
+      </p>
     </section>
   );
 }
