@@ -1,8 +1,45 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Calculator
 
-Currently, two official plugins are available:
+## Описание проекта
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Calculator — простое и удобное приложение для выполнения базовых арифметических операций: сложения, вычитания, умножения и деления. Подходит для повседневных расчетов и отличается чистым интерфейсом и быстрой работой.
+
+
+## Навигация
+- [недостатки](#Недостатки)
+- [технологии](#Технологии)
+- [как запустить](#Как-запустить-локально)
+
+## Недостатки
+Не реализовал кнопку "%". Было лень
+
+## Технологии
+- HTML
+- CSS
+- React.js
+- JSX
+- Vite
+
+## Как запустить локально
+
+1. Убедитесь, что у вас установлен Node.js и npm
+2. Клонируйте репозиторий:
+
+   ```bash
+   git clone https://github.com/boyra4483/weather-app
+
+3. Перейдите в директорию проекта:
+
+   ```bash
+   cd weather
+
+4. Установите зависимости
+   ```bash
+   npm install
+
+5. Запустите приложение (cервер)
+   ```bash
+   npm run dev
+
+6. Перейдите в браузер по адресу http://localhost:5173/ (если используется Vite).
