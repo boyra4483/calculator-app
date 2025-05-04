@@ -27,12 +27,12 @@ Calculator — простое и удобное приложение для вы
 2. Клонируйте репозиторий:
 
    ```bash
-   git clone https://github.com/boyra4483/weather-app
+   git clone https://github.com/boyra4483/calculator-app
 
 3. Перейдите в директорию проекта:
 
    ```bash
-   cd weather
+   cd calculator
 
 4. Установите зависимости
    ```bash
